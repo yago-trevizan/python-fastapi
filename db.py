@@ -1,4 +1,5 @@
 from models.tasks_model import Task
+from models.user_model import User
 
 tarefas: list[Task] = [
   { "id": 1, "title": "Estudar Docker", "done": True },
@@ -17,3 +18,5 @@ tarefas: list[Task] = [
   { "id": 14, "title": "Criar endpoints com PATCH e DELETE", "done": True },
   { "id": 15, "title": "Documentar o projeto", "done": False }
 ]
+
+usuarios: list[User] = []
