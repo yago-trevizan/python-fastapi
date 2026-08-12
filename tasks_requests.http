@@ -1,0 +1,29 @@
+@baseUrl = http://localhost:8000/tarefas
+
+GET {{baseUrl}}
+
+###
+
+GET {{baseUrl}}/2
+
+###
+
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "title": "Estudar Python"
+}
+
+###
+
+PATCH {{baseUrl}}/2
+Content-Type: application/json
+
+{
+  "done": "yes"
+}
+
+###
+
+DELETE {{baseUrl}}/2
