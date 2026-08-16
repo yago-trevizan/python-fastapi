@@ -1,8 +1,16 @@
 from fastapi import APIRouter, Response, Cookie
 from typing import Annotated
-from models.auth_model import Credentials
+from models.auth_model import Credentials, User, GetUsersOutput
+from db import usuarios
 
 auth_router = APIRouter(prefix="/auth", tags=["authentication"])
+
+@auth_router.post("/signin", status_code=201)
+def signin(new_user: User):
+  usuarios.append(new_user.model_dump())
+
+  return { "msg": f"Usuário '{new_user.username}' criado com sucesso" }
+
 
 @auth_router.post("/login")
 def login(credentials: Credentials ,response: Response):
@@ -24,3 +32,7 @@ def me(token: Annotated[str, Cookie()] = ""):
     return { "msg": f"Logado com: {username}"}
 
   return { "msg": "Deslogado" }
+
+@auth_router.get("/users", response_model=GetUsersOutput)
+def get_users():
+  return { "users": usuarios }

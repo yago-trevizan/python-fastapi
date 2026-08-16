@@ -1,5 +1,16 @@
 @baseUrl = http://localhost:8000/auth
 
+POST {{baseUrl}}/signin
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "username": "john_d",
+  "password": "123456"
+}
+
+###
+
 POST {{baseUrl}}/login
 Content-Type: application/json
 
@@ -15,3 +26,7 @@ POST {{baseUrl}}/logout
 ###
 
 GET {{baseUrl}}/me
+
+###
+
+GET {{baseUrl}}/users
