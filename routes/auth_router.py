@@ -1,8 +1,19 @@
-from fastapi import APIRouter, Response, Cookie
+from fastapi import APIRouter, Response, Cookie, Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import Annotated
 from models.auth_model import Credentials, User, GetUsersOutput
 from db import usuarios
-from utils.functions import hash_password
+from utils.functions import hash_password, verify_password
+import jwt
+from datetime import datetime, timedelta, timezone
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
+
+SECRET_KEY = getenv("SECRET_KEY")
+ALGORITHM = getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 auth_router = APIRouter(prefix="/auth", tags=["authentication"])
 
@@ -15,12 +26,21 @@ def signin(new_user: User):
 
   return { "msg": f"Usuário '{new_user.username}' criado com sucesso" }
 
-
 @auth_router.post("/login")
-def login(credentials: Credentials ,response: Response):
-  response.set_cookie("token", f"token-{credentials.username}")
+def login(credentials: Annotated[OAuth2PasswordRequestForm, Depends()]):
+  user = next((u for u in usuarios if u.username == credentials.username), None)
 
-  return { "msg": "Login realizado com sucesso" }
+  if not user:
+    raise HTTPException(status_code=401, detail="Username or password invalid")
+
+  if not verify_password(credentials.password, user.password):
+    raise HTTPException(status_code=401, detail="Username or password invalid")
+
+  expires_at = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+
+  token = jwt.encode({ "sub": user.username, "exp": expires_at }, SECRET_KEY, algorithm=ALGORITHM)
+
+  return { "access_token": token, "token_type": "bearer" }
 
 @auth_router.post("/logout")
 def logout(response: Response):
