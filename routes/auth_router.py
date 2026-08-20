@@ -17,6 +17,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 auth_router = APIRouter(prefix="/auth", tags=["authentication"])
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+
 @auth_router.post("/signin", status_code=201)
 def signin(new_user: User):
   hashed_password = hash_password(new_user.password)
@@ -57,6 +59,6 @@ def me(token: Annotated[str, Cookie()] = ""):
 
   return { "msg": "Deslogado" }
 
-@auth_router.get("/users", response_model=GetUsersOutput)
+@auth_router.get("/users", response_model=GetUsersOutput, dependencies=[Depends(oauth2_scheme)])
 def get_users():
   return { "users": usuarios }

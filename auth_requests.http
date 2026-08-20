@@ -28,3 +28,4 @@ GET {{baseUrl}}/me
 ###
 
 GET {{baseUrl}}/users
+Authorization: Bearer <jwt_token>
