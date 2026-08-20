@@ -2,12 +2,16 @@ from fastapi import APIRouter, Response, Cookie
 from typing import Annotated
 from models.auth_model import Credentials, User, GetUsersOutput
 from db import usuarios
+from utils.functions import hash_password
 
 auth_router = APIRouter(prefix="/auth", tags=["authentication"])
 
 @auth_router.post("/signin", status_code=201)
 def signin(new_user: User):
-  usuarios.append(new_user.model_dump())
+  hashed_password = hash_password(new_user.password)
+  new_user.password = hashed_password
+
+  usuarios.append(new_user)
 
   return { "msg": f"Usuário '{new_user.username}' criado com sucesso" }
 
