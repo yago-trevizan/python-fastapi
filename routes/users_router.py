@@ -1,15 +1,13 @@
-from fastapi import APIRouter, Cookie, Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import APIRouter, Depends, HTTPException
 from typing import Annotated
 from models.user_model import GetUsersOutput
-from db import usuarios
+from utils.db import usuarios
+from utils.dependencies import oauth2_scheme
 import jwt
 from os import getenv
 
 SECRET_KEY = getenv("SECRET_KEY")
 ALGORITHM = getenv("ALGORITHM")
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 user_router = APIRouter(prefix="/users", tags=["Usuários"])
 
