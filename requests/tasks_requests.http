@@ -1,6 +1,7 @@
 @baseUrl = http://localhost:8000/tarefas
 
 GET {{baseUrl}}
+Authorization: Bearer <jwt_token>
 
 ###
 
@@ -12,7 +13,8 @@ POST {{baseUrl}}
 Content-Type: application/json
 
 {
-  "title": "Estudar Python"
+  "title": "Estudar Python",
+  "user_id": 0
 }
 
 ###
