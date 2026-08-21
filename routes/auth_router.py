@@ -59,6 +59,11 @@ def me(token: Annotated[str, Cookie()] = ""):
 
   return { "msg": "Deslogado" }
 
-@auth_router.get("/users", response_model=GetUsersOutput, dependencies=[Depends(oauth2_scheme)])
-def get_users():
+@auth_router.get("/users", response_model=GetUsersOutput)
+def get_users(token: Annotated[str, Depends(oauth2_scheme)]):
+  try:
+    jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+  except jwt.ExpiredSignatureError:
+    raise HTTPException(status_code=401, detail="Token expired")
+  
   return { "users": usuarios }
