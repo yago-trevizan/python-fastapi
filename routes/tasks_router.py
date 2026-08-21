@@ -12,7 +12,7 @@ def listar_tarefas() :
     "tarefas": tarefas
   }
 
-@task_router.get("/{task_id}", response_model=Task)
+@task_router.get("/{task_id}", response_model=Task, dependencies=[Depends(oauth2_scheme)])
 def encontrar_tarefa(task_id: int):
   found_task = next((t for t in tarefas if t.id == task_id), None)
 
@@ -21,7 +21,7 @@ def encontrar_tarefa(task_id: int):
 
   return found_task
 
-@task_router.post("/", response_model=Task)
+@task_router.post("/", response_model=Task, dependencies=[Depends(oauth2_scheme)])
 def criar_tarefa(task: PostInput):
   next_id = get_next_id()
 
@@ -30,7 +30,7 @@ def criar_tarefa(task: PostInput):
 
   return new_task
 
-@task_router.patch("/{task_id}")
+@task_router.patch("/{task_id}", dependencies=[Depends(oauth2_scheme)])
 def atualizar_tarefa(task_id: int, task: PatchInput):
 
   found_index = next((i for i, t in enumerate(tarefas) if t.id == task_id), -1)
@@ -48,7 +48,7 @@ def atualizar_tarefa(task_id: int, task: PatchInput):
 
   return { "detail": f"Tarefa {task_id} atualizada com sucesso" }
 
-@task_router.delete("/{task_id}")
+@task_router.delete("/{task_id}", dependencies=[Depends(oauth2_scheme)])
 def deletar_tarefa(task_id: int):
   found_index = next((i for i, t in enumerate(tarefas) if t.id == task_id), -1)
 
