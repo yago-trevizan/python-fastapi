@@ -21,6 +21,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 @auth_router.post("/signin", status_code=201)
 def signin(new_user: User):
+  existing_user = next((u for u in usuarios if u.username == new_user.username), None)
+
+  if existing_user:
+    raise HTTPException(status_code=422, detail=f"Username '{new_user.username}' já existe")
+
   hashed_password = hash_password(new_user.password)
   new_user.password = hashed_password
 
