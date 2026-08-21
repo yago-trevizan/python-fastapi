@@ -1,12 +1,21 @@
 @baseUrl = http://localhost:8000/auth
 
-POST {{baseUrl}}/login
+POST {{baseUrl}}/signin
 Content-Type: application/json
 
 {
-  "username": "john",
+  "name": "John Doe",
+  "username": "john_d",
   "password": "123456"
 }
+
+###
+
+POST {{baseUrl}}/login
+Content-Type: application/x-www-form-urlencoded
+
+username=john_d
+&password=123456
 
 ###
 
@@ -15,3 +24,8 @@ POST {{baseUrl}}/logout
 ###
 
 GET {{baseUrl}}/me
+
+###
+
+GET {{baseUrl}}/users
+Authorization: Bearer <jwt_token>
