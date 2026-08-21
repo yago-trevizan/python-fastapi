@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from models.user_model import User
-from db import usuarios
+from utils.db import usuarios
 from utils.functions import hash_password, verify_password
 import jwt
 from datetime import datetime, timedelta, timezone

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from models.tasks_model import Task, GetOutput, PostInput, PatchInput
-from db import tarefas
+from utils.db import tarefas
 from utils.functions import get_next_id
 
 task_router = APIRouter(prefix="/tarefas", tags=["tarefas"])
