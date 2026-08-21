@@ -44,12 +44,6 @@ def login(credentials: Annotated[OAuth2PasswordRequestForm, Depends()]):
 
   return { "access_token": token, "token_type": "bearer" }
 
-@auth_router.post("/logout")
-def logout(response: Response):
-  response.delete_cookie("token")
-
-  return { "msg": "Você foi deslogado" }
-
 @auth_router.get("/me")
 def me(token: Annotated[str, Cookie()] = ""):
   if token:
