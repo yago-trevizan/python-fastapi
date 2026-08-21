@@ -16,16 +16,3 @@ Content-Type: application/x-www-form-urlencoded
 
 username=john_d
 &password=123456
-
-###
-
-POST {{baseUrl}}/logout
-
-###
-
-GET {{baseUrl}}/me
-
-###
-
-GET {{baseUrl}}/users
-Authorization: Bearer <jwt_token>
