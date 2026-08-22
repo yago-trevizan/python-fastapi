@@ -4,7 +4,7 @@ class Task(BaseModel):
   id: int
   title: str
   done: bool = False
-  user_id: int = 0
+  user_id: int
 
 class GetOutput(BaseModel):
   tarefas: list[Task]
