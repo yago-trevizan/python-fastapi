@@ -8,10 +8,12 @@ from utils.functions import get_next_id
 
 task_router = APIRouter(prefix="/tarefas", tags=["tarefas"])
 
-@task_router.get("/", response_model=GetOutput, dependencies=[Depends(oauth2_scheme)])
-def listar_tarefas() :
+@task_router.get("/", response_model=GetOutput)
+def listar_tarefas(logged_user: Annotated[User, Depends(get_logged_user)]):
+  tarefas_proprias = [t for t in tarefas if t.user_id == logged_user.id]
+
   return {
-    "tarefas": tarefas
+    "tarefas": tarefas_proprias
   }
 
 @task_router.get("/{task_id}", response_model=Task, dependencies=[Depends(oauth2_scheme)])
