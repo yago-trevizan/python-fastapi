@@ -1,7 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
 from models.tasks_model import Task, GetOutput, PostInput, PatchInput
+from models.user_model import User
+from typing import Annotated
 from utils.db import tarefas
-from utils.dependencies import oauth2_scheme
+from utils.dependencies import oauth2_scheme, get_logged_user
 from utils.functions import get_next_id
 
 task_router = APIRouter(prefix="/tarefas", tags=["tarefas"])
@@ -21,11 +23,11 @@ def encontrar_tarefa(task_id: int):
 
   return found_task
 
-@task_router.post("/", response_model=Task, dependencies=[Depends(oauth2_scheme)])
-def criar_tarefa(task: PostInput):
+@task_router.post("/", response_model=Task)
+def criar_tarefa(task: PostInput, logged_user: Annotated[User, Depends(get_logged_user)]):
   next_id = get_next_id()
 
-  new_task = Task(id=next_id, title=task.title)
+  new_task = Task(id=next_id, title=task.title, user_id=logged_user.id)
   tarefas.append(new_task)
 
   return new_task
