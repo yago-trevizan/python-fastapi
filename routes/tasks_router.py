@@ -4,7 +4,7 @@ from models.user_model import User
 from typing import Annotated
 from utils.db import tarefas
 from utils.dependencies import get_logged_user
-from utils.functions import get_next_id
+from utils.functions import get_next_id, get_task_index
 
 task_router = APIRouter(prefix="/tarefas", tags=["tarefas"])
 
@@ -27,11 +27,7 @@ def criar_tarefa(task: PostInput, logged_user: Annotated[User, Depends(get_logge
 
 @task_router.patch("/{task_id}")
 def atualizar_tarefa(task_id: int, task: PatchInput, logged_user: Annotated[User, Depends(get_logged_user)]):
-
-  found_index = next((i for i, t in enumerate(tarefas) if t.id == task_id), -1)
-
-  if found_index == -1:
-    raise HTTPException(status_code=404, detail=f"Tarefa {task_id} não encontrada")    
+  found_index = get_task_index(task_id) 
 
   owner_of_task = tarefas[found_index].user_id
 
@@ -50,10 +46,7 @@ def atualizar_tarefa(task_id: int, task: PatchInput, logged_user: Annotated[User
 
 @task_router.delete("/{task_id}")
 def deletar_tarefa(task_id: int, logged_user: Annotated[User, Depends(get_logged_user)]):
-  found_index = next((i for i, t in enumerate(tarefas) if t.id == task_id), -1)
-
-  if found_index == -1:
-    raise HTTPException(status_code=404, detail=f"Tarefa {task_id} não encontrada")
+  found_index = get_task_index(task_id) 
 
   owner_of_task = tarefas[found_index].user_id
 
