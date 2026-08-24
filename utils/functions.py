@@ -25,3 +25,9 @@ def get_task_index(task_id: int):
     raise HTTPException(status_code=404, detail=f"Tarefa {task_id} não encontrada")
 
   return found_index
+
+def validate_ownership(task_index: int, logged_user_id: int, action: str):
+  owner_id = tarefas[task_index].user_id
+  
+  if owner_id != logged_user_id:
+    raise HTTPException(status_code=422, detail=f"Você não pode {action} uma tarefa que não é sua")

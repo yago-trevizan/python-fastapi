@@ -4,7 +4,7 @@ from models.user_model import User
 from typing import Annotated
 from utils.db import tarefas
 from utils.dependencies import get_logged_user
-from utils.functions import get_next_id, get_task_index
+from utils.functions import get_next_id, get_task_index, validate_ownership
 
 task_router = APIRouter(prefix="/tarefas", tags=["tarefas"])
 
@@ -27,12 +27,9 @@ def criar_tarefa(task: PostInput, logged_user: Annotated[User, Depends(get_logge
 
 @task_router.patch("/{task_id}")
 def atualizar_tarefa(task_id: int, task: PatchInput, logged_user: Annotated[User, Depends(get_logged_user)]):
-  found_index = get_task_index(task_id) 
+  found_index = get_task_index(task_id)
 
-  owner_of_task = tarefas[found_index].user_id
-
-  if owner_of_task != logged_user.id:
-    raise HTTPException(status_code=422, detail="Você não pode atualizar uma tarefa que não é sua")
+  validate_ownership(found_index, logged_user.id, "atualizar")
 
   task_dict = task.model_dump(exclude_unset=True)
 
@@ -48,10 +45,7 @@ def atualizar_tarefa(task_id: int, task: PatchInput, logged_user: Annotated[User
 def deletar_tarefa(task_id: int, logged_user: Annotated[User, Depends(get_logged_user)]):
   found_index = get_task_index(task_id) 
 
-  owner_of_task = tarefas[found_index].user_id
-
-  if owner_of_task != logged_user.id:
-    raise HTTPException(status_code=422, detail="Você não pode deletar uma tarefa que não é sua")
+  validate_ownership(found_index, logged_user.id, "excluir")
 
   del tarefas[found_index]
 
