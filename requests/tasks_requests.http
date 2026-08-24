@@ -5,22 +5,19 @@ Authorization: Bearer <jwt_token>
 
 ###
 
-GET {{baseUrl}}/2
-
-###
-
 POST {{baseUrl}}
 Content-Type: application/json
+Authorization: Bearer <jwt_token>
 
 {
-  "title": "Estudar Python",
-  "user_id": 0
+  "title": "Estudar Python"
 }
 
 ###
 
 PATCH {{baseUrl}}/2
 Content-Type: application/json
+Authorization: Bearer <jwt_token>
 
 {
   "done": "yes"
@@ -29,3 +26,4 @@ Content-Type: application/json
 ###
 
 DELETE {{baseUrl}}/2
+Authorization: Bearer <jwt_token>

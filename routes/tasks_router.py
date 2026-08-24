@@ -3,7 +3,7 @@ from models.tasks_model import Task, GetOutput, PostInput, PatchInput
 from models.user_model import User
 from typing import Annotated
 from utils.db import tarefas
-from utils.dependencies import oauth2_scheme, get_logged_user
+from utils.dependencies import get_logged_user
 from utils.functions import get_next_id
 
 task_router = APIRouter(prefix="/tarefas", tags=["tarefas"])
@@ -15,15 +15,6 @@ def listar_tarefas(logged_user: Annotated[User, Depends(get_logged_user)]):
   return {
     "tarefas": tarefas_proprias
   }
-
-@task_router.get("/{task_id}", response_model=Task, dependencies=[Depends(oauth2_scheme)])
-def encontrar_tarefa(task_id: int):
-  found_task = next((t for t in tarefas if t.id == task_id), None)
-
-  if not found_task:
-    raise HTTPException(status_code=404, detail=f"Tarefa {task_id} não encontrada")
-
-  return found_task
 
 @task_router.post("/", response_model=Task)
 def criar_tarefa(task: PostInput, logged_user: Annotated[User, Depends(get_logged_user)]):
