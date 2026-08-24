@@ -57,12 +57,17 @@ def atualizar_tarefa(task_id: int, task: PatchInput, logged_user: Annotated[User
 
   return { "detail": f"Tarefa {task_id} atualizada com sucesso" }
 
-@task_router.delete("/{task_id}", dependencies=[Depends(oauth2_scheme)])
-def deletar_tarefa(task_id: int):
+@task_router.delete("/{task_id}")
+def deletar_tarefa(task_id: int, logged_user: Annotated[User, Depends(get_logged_user)]):
   found_index = next((i for i, t in enumerate(tarefas) if t.id == task_id), -1)
 
   if found_index == -1:
-    raise HTTPException(status_code=404, detail=f"Tarefa {task_id} não encontrada")    
+    raise HTTPException(status_code=404, detail=f"Tarefa {task_id} não encontrada")
+
+  owner_of_task = tarefas[found_index].user_id
+
+  if owner_of_task != logged_user.id:
+    raise HTTPException(status_code=422, detail="Você não pode deletar uma tarefa que não é sua")
 
   del tarefas[found_index]
 
