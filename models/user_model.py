@@ -7,6 +7,7 @@ class User(BaseModel):
   password: str = Field(min_length=6)
 
 class UserOutput(BaseModel):
+  id: int
   name: str
   username: str
 
