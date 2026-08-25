@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from models.user_model import User
-from utils.db import usuarios
+from utils.db import users
 from utils.functions import hash_password, verify_password
 import jwt
 from datetime import datetime, timedelta, timezone
@@ -19,7 +19,7 @@ auth_router = APIRouter(prefix="/auth", tags=["authentication"])
 
 @auth_router.post("/signin", status_code=201)
 def signin(new_user: User):
-  existing_user = next((u for u in usuarios if u.username == new_user.username), None)
+  existing_user = next((u for u in users if u.username == new_user.username), None)
 
   if existing_user:
     raise HTTPException(status_code=422, detail=f"Username '{new_user.username}' já existe")
@@ -27,13 +27,13 @@ def signin(new_user: User):
   hashed_password = hash_password(new_user.password)
   new_user.password = hashed_password
 
-  usuarios.append(new_user)
+  users.append(new_user)
 
   return { "msg": f"Usuário '{new_user.username}' criado com sucesso" }
 
 @auth_router.post("/login")
 def login(credentials: Annotated[OAuth2PasswordRequestForm, Depends()]):
-  user = next((u for u in usuarios if u.username == credentials.username), None)
+  user = next((u for u in users if u.username == credentials.username), None)
 
   if not user:
     raise HTTPException(status_code=401, detail="Username or password invalid")

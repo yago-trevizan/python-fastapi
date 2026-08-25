@@ -19,7 +19,7 @@ tasks: list[Task] = [
   Task(id=15, title="Documentar o projeto", done=False, user_id=2),
 ]
 
-usuarios: list[User] = [
+users: list[User] = [
   User(id=1, name="John Doe", username="john_d", password="$argon2id$v=19$m=65536,t=3,p=4$gqJ9VogPzcbiAbzc7/t3uw$0cGc9HM/hCcEpyl5DxFwhs+v0uAoxmGdY2eANYrDRCM"),
   User(id=2, name="Foo Bar", username="foo_b", password="$argon2id$v=19$m=65536,t=3,p=4$gqJ9VogPzcbiAbzc7/t3uw$0cGc9HM/hCcEpyl5DxFwhs+v0uAoxmGdY2eANYrDRCM"),
 ]
