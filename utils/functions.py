@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from utils.db import tasks
+from utils.db import tasks, users
 from pwdlib import PasswordHash
 
 password_hash = PasswordHash.recommended()
@@ -11,6 +11,14 @@ def get_next_id() -> int:
     next_id = tasks[-1].id + 1
 
   return next_id
+
+def get_next_user_id() -> int:
+  next_user_id = 1
+
+  if users:
+    next_user_id = users[-1].id + 1
+
+  return next_user_id
 
 
 def hash_password(password: str):
