@@ -1,5 +1,5 @@
 .env
 .venv
 __pycache__
-tests_requests.http
+test_requests.http
 tests_router.py
