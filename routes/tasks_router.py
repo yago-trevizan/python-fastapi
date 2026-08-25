@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from models.tasks_model import Task, GetOutput, PostInput, PatchInput
+from models.task_model import Task, GetOutput, PostInput, PatchInput
 from models.user_model import User
 from typing import Annotated
 from utils.db import tarefas

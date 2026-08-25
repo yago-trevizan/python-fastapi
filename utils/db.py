@@ -1,4 +1,4 @@
-from models.tasks_model import Task
+from models.task_model import Task
 from models.user_model import User
 
 tarefas: list[Task] = [
