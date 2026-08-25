@@ -45,7 +45,7 @@ def update_task(task_id: int, task: PatchInput, logged_user: Annotated[User, Dep
 def delete_task(task_id: int, logged_user: Annotated[User, Depends(get_logged_user)]):
   found_index = get_task_index(task_id) 
 
-  validate_ownership(found_index, logged_user.id, "excluir")
+  validate_ownership(found_index, logged_user.id, "delete")
 
   del tasks[found_index]
 
