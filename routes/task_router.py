@@ -9,15 +9,15 @@ from utils.functions import get_next_id, get_task_index, validate_ownership
 task_router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 @task_router.get("/", response_model=GetOutput)
-def listar_tarefas(logged_user: Annotated[User, Depends(get_logged_user)]):
-  tarefas_proprias = [t for t in tasks if t.user_id == logged_user.id]
+def list_tasks(logged_user: Annotated[User, Depends(get_logged_user)]):
+  owned_tasks = [t for t in tasks if t.user_id == logged_user.id]
 
   return {
-    "tasks": tarefas_proprias
+    "tasks": owned_tasks
   }
 
 @task_router.post("/", response_model=Task)
-def criar_tarefa(task: PostInput, logged_user: Annotated[User, Depends(get_logged_user)]):
+def create_task(task: PostInput, logged_user: Annotated[User, Depends(get_logged_user)]):
   next_id = get_next_id()
 
   new_task = Task(id=next_id, title=task.title, user_id=logged_user.id)
@@ -26,27 +26,27 @@ def criar_tarefa(task: PostInput, logged_user: Annotated[User, Depends(get_logge
   return new_task
 
 @task_router.patch("/{task_id}")
-def atualizar_tarefa(task_id: int, task: PatchInput, logged_user: Annotated[User, Depends(get_logged_user)]):
+def update_task(task_id: int, task: PatchInput, logged_user: Annotated[User, Depends(get_logged_user)]):
   found_index = get_task_index(task_id)
 
-  validate_ownership(found_index, logged_user.id, "atualizar")
+  validate_ownership(found_index, logged_user.id, "update")
 
   task_dict = task.model_dump(exclude_unset=True)
 
   if not task_dict:
-    raise HTTPException(status_code=422, detail=f"Escolha um campo válido para atualizar")    
+    raise HTTPException(status_code=422, detail=f"Choose a valid field to update")    
   
   updated_task = { **tasks[found_index].model_dump(), **task_dict }
   tasks[found_index] = Task(**updated_task)
 
-  return { "detail": f"Tarefa {task_id} atualizada com sucesso" }
+  return { "detail": f"Task {task_id} successfully updated" }
 
 @task_router.delete("/{task_id}")
-def deletar_tarefa(task_id: int, logged_user: Annotated[User, Depends(get_logged_user)]):
+def delete_task(task_id: int, logged_user: Annotated[User, Depends(get_logged_user)]):
   found_index = get_task_index(task_id) 
 
   validate_ownership(found_index, logged_user.id, "excluir")
 
   del tasks[found_index]
 
-  return { "detail": f"Tarefa {task_id} excluída com sucesso" }
+  return { "detail": f"Task {task_id} successfully deleted" }
