@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from routes.tasks_router import task_router
+from routes.task_router import task_router
 from routes.auth_router import auth_router
-from routes.users_router import user_router
+from routes.user_router import user_router
 
 app = FastAPI()
 
