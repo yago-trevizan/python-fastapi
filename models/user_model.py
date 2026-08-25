@@ -1,10 +1,10 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 class User(BaseModel):
-  id: int = Field(gt=0)
-  name: str = Field(min_length=3)
-  username: str = Field(max_length=12)
-  password: str = Field(min_length=6)
+  id: int
+  name: str
+  username: str
+  password: str
 
 class UserOutput(BaseModel):
   id: int
