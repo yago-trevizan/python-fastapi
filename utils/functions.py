@@ -12,11 +12,14 @@ def get_next_id() -> int:
 
   return next_id
 
+
 def hash_password(password: str):
   return password_hash.hash(password)
 
+
 def verify_password(password: str, hashed_password: str):
   return password_hash.verify(password, hashed_password)
+
 
 def get_task_index(task_id: int):
   found_index = next((i for i, t in enumerate(tarefas) if t.id == task_id), -1)
@@ -25,6 +28,7 @@ def get_task_index(task_id: int):
     raise HTTPException(status_code=404, detail=f"Tarefa {task_id} não encontrada")
 
   return found_index
+
 
 def validate_ownership(task_index: int, logged_user_id: int, action: str):
   owner_id = tarefas[task_index].user_id

@@ -28,6 +28,7 @@ def verify_token(token: Annotated[str, Depends(oauth2_scheme)]):
   else:
     return decoded_token
 
+
 def get_logged_user(decoded_token: Annotated[Token, Depends(verify_token)]):
   username = decoded_token["sub"]
 
