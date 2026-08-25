@@ -7,7 +7,7 @@ class Task(BaseModel):
   user_id: int
 
 class GetOutput(BaseModel):
-  tarefas: list[Task]
+  tasks: list[Task]
 
 class PostInput(BaseModel):
   title: str

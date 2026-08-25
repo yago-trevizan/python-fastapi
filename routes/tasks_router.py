@@ -13,7 +13,7 @@ def listar_tarefas(logged_user: Annotated[User, Depends(get_logged_user)]):
   tarefas_proprias = [t for t in tarefas if t.user_id == logged_user.id]
 
   return {
-    "tarefas": tarefas_proprias
+    "tasks": tarefas_proprias
   }
 
 @task_router.post("/", response_model=Task)
