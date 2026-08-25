@@ -22,14 +22,14 @@ def signin(new_user: User):
   existing_user = next((u for u in users if u.username == new_user.username), None)
 
   if existing_user:
-    raise HTTPException(status_code=422, detail=f"Username '{new_user.username}' já existe")
+    raise HTTPException(status_code=422, detail=f"Username '{new_user.username}' already exists")
 
   hashed_password = hash_password(new_user.password)
   new_user.password = hashed_password
 
   users.append(new_user)
 
-  return { "msg": f"Usuário '{new_user.username}' criado com sucesso" }
+  return { "msg": f"User '{new_user.username}' successfully created" }
 
 @auth_router.post("/login")
 def login(credentials: Annotated[OAuth2PasswordRequestForm, Depends()]):
