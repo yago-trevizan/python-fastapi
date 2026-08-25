@@ -1,4 +1,7 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, StringConstraints
+from typing import Annotated
+
+Title = Annotated[str, StringConstraints(min_length=5, max_length=40)]
 
 class Task(BaseModel):
   id: int
@@ -10,8 +13,8 @@ class GetOutput(BaseModel):
   tasks: list[Task]
 
 class PostInput(BaseModel):
-  title: str = Field(min_length=5, max_length=40)
+  title: Title
 
 class PatchInput(BaseModel):
-  title: str | None = None
+  title: Title | None = None
   done: bool | None = None
