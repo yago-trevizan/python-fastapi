@@ -1,7 +1,7 @@
 from models.task_model import Task
 from models.user_model import User
 
-tarefas: list[Task] = [
+tasks: list[Task] = [
   Task(id=1, title="Estudar Docker", done=True, user_id=1),
   Task(id=2, title="Aprender FastAPI", done=False, user_id=1),
   Task(id=3, title="Praticar SQLAlchemy", done=True, user_id=1),

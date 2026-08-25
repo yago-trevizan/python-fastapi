@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from utils.db import tarefas
+from utils.db import tasks
 from pwdlib import PasswordHash
 
 password_hash = PasswordHash.recommended()
@@ -7,8 +7,8 @@ password_hash = PasswordHash.recommended()
 def get_next_id() -> int:
   next_id = 1
 
-  if tarefas:
-    next_id = tarefas[-1].id + 1
+  if tasks:
+    next_id = tasks[-1].id + 1
 
   return next_id
 
@@ -22,7 +22,7 @@ def verify_password(password: str, hashed_password: str):
 
 
 def get_task_index(task_id: int):
-  found_index = next((i for i, t in enumerate(tarefas) if t.id == task_id), -1)
+  found_index = next((i for i, t in enumerate(tasks) if t.id == task_id), -1)
  
   if found_index == -1:
     raise HTTPException(status_code=404, detail=f"Tarefa {task_id} não encontrada")
@@ -31,7 +31,7 @@ def get_task_index(task_id: int):
 
 
 def validate_ownership(task_index: int, logged_user_id: int, action: str):
-  owner_id = tarefas[task_index].user_id
+  owner_id = tasks[task_index].user_id
   
   if owner_id != logged_user_id:
     raise HTTPException(status_code=422, detail=f"Você não pode {action} uma tarefa que não é sua")
