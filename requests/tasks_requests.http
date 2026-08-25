@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:8000/tarefas
+@baseUrl = http://localhost:8000/tasks
 
 GET {{baseUrl}}
 Authorization: Bearer <jwt_token>

@@ -6,7 +6,7 @@ from utils.db import tarefas
 from utils.dependencies import get_logged_user
 from utils.functions import get_next_id, get_task_index, validate_ownership
 
-task_router = APIRouter(prefix="/tarefas", tags=["tarefas"])
+task_router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 @task_router.get("/", response_model=GetOutput)
 def listar_tarefas(logged_user: Annotated[User, Depends(get_logged_user)]):
