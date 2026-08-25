@@ -10,7 +10,7 @@ Content-Type: application/json
 Authorization: Bearer <jwt_token>
 
 {
-  "title": "Estudar Python"
+  "title": "Study Angular"
 }
 
 ###
