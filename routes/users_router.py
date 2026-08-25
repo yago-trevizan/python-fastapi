@@ -4,7 +4,7 @@ from models.user_model import GetUsersOutput
 from utils.db import usuarios
 from utils.dependencies import verify_token
 
-user_router = APIRouter(prefix="/users", tags=["Usuários"])
+user_router = APIRouter(prefix="/users", tags=["users"])
 
 @user_router.get("/me")
 def me(decoded_token: Annotated[str, Depends(verify_token)]):
